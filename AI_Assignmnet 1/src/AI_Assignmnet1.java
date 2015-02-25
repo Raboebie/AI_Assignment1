@@ -1,3 +1,6 @@
+
+import javax.swing.JPanel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,7 +18,12 @@ public class AI_Assignmnet1 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        System.out.println("Testing the commit and push");
+        System.out.println("Creating window");
+        GUI gui = new GUI();
+        gui.createGUI(800 , 600);
+        
+        
+        
     }
     
 }
