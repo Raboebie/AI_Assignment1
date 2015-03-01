@@ -18,8 +18,8 @@ import javax.swing.border.LineBorder;
  */
 public class GUI {
     public static int dimentions = 0;
-    public JTextField sizeField;
-    public JTextField txtStartingCell;
+    public static JTextField sizeField;
+    public static JTextField txtStartingCell;
     public static JFrame frame;
     public enum Pos{LEFT,RIGHT}
     public enum Colour{WHITE,RED,BLUE}
@@ -266,6 +266,18 @@ public class GUI {
         
         for(int k = 0 ; k < allowedCellIndexes.length ; k++)
             System.out.println(allowedCellIndexes[k]  + " " + k);
+        
+        if(index % dimentions == 0){
+            allowedCellIndexes[0] = -1;
+            allowedCellIndexes[4] = -1;
+            allowedCellIndexes[6] = -1;
+        }
+        
+        if(index % dimentions == dimentions-1){
+            allowedCellIndexes[1] = -1;
+            allowedCellIndexes[5] = -1;
+            allowedCellIndexes[7] = -1;
+        }
         
         return allowedCellIndexes;
     }
