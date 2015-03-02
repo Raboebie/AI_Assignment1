@@ -70,7 +70,7 @@ public class GUI {
                 setSize.setBounds(10,10,100,20);
                 boardSize.add(setSize);
                 
-                sizeField = new JTextField();
+                sizeField = new  JTextField();
                 sizeField.setBounds(110, 10, 200, 20);
                 boardSize.add(sizeField);
                 
@@ -184,16 +184,7 @@ public class GUI {
         menuBar.add(options);
 
         frame.setJMenuBar(menuBar);
-        
-        button1.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                
-            
-            }
-        });
+       
         frame.setVisible(true);
     }
     
