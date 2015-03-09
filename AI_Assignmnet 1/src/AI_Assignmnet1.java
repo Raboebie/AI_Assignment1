@@ -23,7 +23,6 @@ public class AI_Assignmnet1 {
         gui.createGUI(800 , 600);
         
         
-        
     }
     
 }

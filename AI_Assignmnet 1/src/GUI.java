@@ -170,9 +170,7 @@ public class GUI {
                                 }
                             }
                         }
-                        
-                       
-                        
+                                                
                         frame.repaint();
                         
                     }
@@ -193,7 +191,7 @@ public class GUI {
     }
     
     
-    private static void clickedButton(String indexOfClickedButton)
+    public static boolean clickedButton(String indexOfClickedButton)
     {
         LinkedList<JButton> vertical = new LinkedList<JButton>();
         LinkedList<JButton> horizontal = new LinkedList<JButton>();
@@ -203,12 +201,12 @@ public class GUI {
             if(Turn){
                 if(selectedButton.getBackground() != Color.red){
                     selectedButton = null;
-                    return;
+                    return false;
                 }                
             }else{
                 if(selectedButton.getBackground() != Color.blue){
                     selectedButton = null;
-                    return;
+                    return false;
                 }   
                 
             }
@@ -218,6 +216,14 @@ public class GUI {
         else{
             int indexUp = Integer.parseInt(indexOfClickedButton);
             int indexDown = Integer.parseInt(indexOfClickedButton);
+            
+            if(Turn){
+                if(grid[Integer.parseInt(indexOfClickedButton)].getBackground() == Color.red)
+                    return false;
+            }else{
+                if(grid[Integer.parseInt(indexOfClickedButton)].getBackground() == Color.blue)
+                    return false;                
+            }
             
             for(int k = 0; k < AllowedNumSteps ; k++){
                 indexUp -= dimentions;
@@ -251,7 +257,7 @@ public class GUI {
             if(horizontal.contains(selectedButton)) contain = true;
             
             if(!contain) {
-                return;
+                return false;
             }
             
             if(Turn){
@@ -284,9 +290,18 @@ public class GUI {
                    colourCell(i,grid[i].getBackground(),Color.cyan);                     
                 }
             }
-            
+                        
             frame.repaint();
+            
+            if(!Turn){
+                Turn = true;
+                DTree ai = new DTree(grid,dimentions,1);
+                ai.BuildTree();
+            }
+            return true;
         }
+        
+        return false;
     }
     
     private static void colourCell(int index, Color color , Color tranparentColor)
