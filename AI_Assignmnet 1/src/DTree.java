@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.util.LinkedList;
+import java.util.Queue;
 import javax.swing.JButton;
 
 /*
@@ -15,18 +16,22 @@ import javax.swing.JButton;
 public class DTree{
     int plyDepth;
     int dimentions;
+    public Color turn;
     public class Node{
         public LinkedList<Node> children;
         public JButton[] state;
+        public Color[] cGrid;
         
         public Node(int size){
             state = new JButton[size*size];
             children = new LinkedList<>();
+            cGrid = new Color[size*size];
         }
         
         public void InitState(JButton[] grid){
             for(int i = 0; i < grid.length;i++){
                 state[i] = grid[i];
+                cGrid[i] = state[i].getBackground();
             }
         }
     }
@@ -41,27 +46,53 @@ public class DTree{
     }
     
     public void BuildTree(){
-        for(int i=0;i<root.state.length;i++){
-            if(root.state[i].getBackground() == Color.blue){
-                for(int j=0;j<root.state.length;j++){
-                    if(ValidMove(root.state, i, j, dimentions)){
-                        //root.children.add(root.state);//TODO
-                        System.out.println("Move from: "+i+" to: "+ j +" isvalid? " + ValidMove(root.state, i, j, dimentions));
+        Node step = root;
+        Queue<Node> q = new LinkedList<>();
+        q.add(step);
+        int depth = 0;
+        turn = Color.blue;
+        
+        while(!q.isEmpty() && depth < plyDepth){
+            step = q.remove();
+            for(int i=0;i<step.state.length;i++){
+                if(step.cGrid[i] == turn){
+                    for(int j=0;j<step.cGrid.length;j++){
+                        if(ValidMove(step.cGrid, i, j, dimentions)){
+                            Color[] tempstates = new Color[dimentions * dimentions];
+                            for(int k = 0 ; k < step.cGrid.length ; k++){
+                                tempstates[k] = step.cGrid[k];
+                            }
+                            tempstates[i] = (Color.white);
+                            tempstates[j] = (turn);
+                            Node n = new Node(dimentions);
+                            n.cGrid = tempstates;
+                            step.children.add(n);
+                        }
                     }
+                    for(Node e : step.children)
+                    {
+                        q.add(e);
+                    }
+                    
+                    depth++;
+                    if(turn == Color.blue)
+                        turn = Color.red;
+                    else
+                        turn = Color.blue;
                 }
             }
         }
     }
     
-    public boolean ValidMove(JButton[] state, int index, int moveToIndex, int dimentions){
+    public boolean ValidMove(Color[] state, int index, int moveToIndex, int dimentions){
             int AllowedNumSteps = 1;
             int indexUp = moveToIndex;
             int indexDown = moveToIndex;
-            LinkedList<JButton> vertical = new LinkedList<>();
-            LinkedList<JButton> horizontal = new LinkedList<>();
-            JButton selectedButton = state[index];
+            LinkedList<Color> vertical = new LinkedList<>();
+            LinkedList<Color> horizontal = new LinkedList<>();
+            Color selectedButton = state[index];
             
-            if(state[moveToIndex].getBackground() == Color.blue || state[moveToIndex].getBackground() == Color.red)
+            if(state[moveToIndex] == Color.blue || state[moveToIndex] == Color.red)
                 return false;
             
             for(int k = 0; k < AllowedNumSteps ; k++){
