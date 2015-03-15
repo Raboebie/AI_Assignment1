@@ -108,11 +108,8 @@ public class GUI {
                                 rows++;
                                 colombs = 0;
                             }
-                                //System.out.println(colombs);
                                 grid[k] = new JButton("");
                                 grid[k].setBackground(Color.WHITE);
-                                grid[k].putClientProperty("Colour", Colour.WHITE);
-                                grid[k].putClientProperty("Index", k);
                                 grid[k].setName(k + "");
                                 grid[k].setBorder(new LineBorder(Color.BLACK,1));
                                 if(colombs < dimentions / 2)
@@ -290,6 +287,8 @@ public class GUI {
                    colourCell(i,grid[i].getBackground(),Color.cyan);                     
                 }
             }
+            
+            
                         
             frame.repaint();
             
@@ -302,6 +301,17 @@ public class GUI {
         }
         
         return false;
+    }
+    
+    public static void checkPossesion(int index)
+    {
+        Color opponentColour ;
+        if(grid[index].getBackground() == Color.red)
+            opponentColour = Color.blue;
+        else
+            opponentColour = Color.red;
+        
+
     }
     
     private static void colourCell(int index, Color color , Color tranparentColor)
