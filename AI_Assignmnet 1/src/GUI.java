@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.Random;
+import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -17,7 +18,7 @@ import javax.swing.border.LineBorder;
  *
  * @author Dihan
  */
-public class GUI {
+public class GUI implements ActionListener{
     public static int dimentions = 0;
     public static JTextField sizeField;
     public static JTextField txtStartingCell;
@@ -28,9 +29,11 @@ public class GUI {
     public static boolean Turn;
     public static JButton selectedButton;
     public static int AllowedNumSteps = 1;
+    public static boolean playingWithAI;
     
     public void createGUI(int w , int h)
     {
+        playingWithAI = false;
         Turn = true;
         System.out.println(w + " " + h);
         frame = new JFrame();
@@ -59,9 +62,16 @@ public class GUI {
         });
             file.add(exit);
         JMenu options = new JMenu("Options");
-            JMenuItem size = new JMenuItem("Board size");
-            size.addActionListener(new ActionListener() {
-
+        ButtonGroup bg = new ButtonGroup();
+        JRadioButtonMenuItem PvP = new JRadioButtonMenuItem("Player vs Player");
+        PvP.setSelected(true);
+        bg.add(PvP);
+        JRadioButtonMenuItem PvAI = new JRadioButtonMenuItem("Player vs AI");
+        PvAI.setSelected(false);
+        bg.add(PvAI);
+        PvAI.addActionListener(this);
+        JMenuItem size = new JMenuItem("Board size");
+        size.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame boardSize = new JFrame("Set board size");
@@ -177,7 +187,9 @@ public class GUI {
             }
         });
 
-            options.add(size);
+        options.add(size);
+        options.add(PvP);
+        options.add(PvAI);
 
         menuBar.add(file);
         menuBar.add(options);
@@ -187,6 +199,14 @@ public class GUI {
         frame.setVisible(true);
     }
     
+    public void actionPerformed(ActionEvent e){
+        System.out.println(e.getActionCommand());
+        if(e.getActionCommand().equals("Player vs AI")){
+            playingWithAI = true;
+        } else {
+            playingWithAI = false;
+        }
+    }
     
     public static boolean clickedButton(String indexOfClickedButton)
     {
@@ -291,11 +311,12 @@ public class GUI {
             
                         
             frame.repaint();
-            
-            if(!Turn){
-                Turn = true;
-                DTree ai = new DTree(grid,dimentions,1);
-                ai.BuildTree();
+            if(playingWithAI){
+                if(!Turn){
+                    Turn = true;
+                    DTree ai = new DTree(grid,dimentions,1);
+                    ai.BuildTree();
+                }
             }
             return true;
         }
