@@ -312,6 +312,12 @@ public class GUI implements ActionListener{
                     ai.BuildTree();
                 }
             }
+            
+            results = checkWin();
+            if(results[0].equals("false")){//TODO: Put this in a new frame
+                System.out.println(results[1]);
+            }
+            
             return true;
         }
         
