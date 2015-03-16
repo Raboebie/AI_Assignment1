@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.Random;
-import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -187,9 +186,9 @@ public class GUI implements ActionListener{
             }
         });
 
-        options.add(size);
         options.add(PvP);
         options.add(PvAI);
+        options.add(size);
 
         menuBar.add(file);
         menuBar.add(options);
