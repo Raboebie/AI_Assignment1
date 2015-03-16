@@ -229,13 +229,8 @@ public class GUI implements ActionListener{
             int indexUp = Integer.parseInt(indexOfClickedButton);
             int indexDown = Integer.parseInt(indexOfClickedButton);
             
-            if(Turn){
-                if(grid[Integer.parseInt(indexOfClickedButton)].getBackground() == Color.red)
-                    return false;
-            }else{
-                if(grid[Integer.parseInt(indexOfClickedButton)].getBackground() == Color.blue)
-                    return false;                
-            }
+            if(grid[Integer.parseInt(indexOfClickedButton)].getBackground() == Color.red || grid[Integer.parseInt(indexOfClickedButton)].getBackground() == Color.blue)
+                return false;
             
             for(int k = 0; k < AllowedNumSteps ; k++){
                 indexUp -= dimentions;
