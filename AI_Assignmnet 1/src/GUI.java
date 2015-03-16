@@ -199,13 +199,9 @@ public class GUI implements ActionListener{
         frame.setVisible(true);
     }
     
+    @Override
     public void actionPerformed(ActionEvent e){
-        System.out.println(e.getActionCommand());
-        if(e.getActionCommand().equals("Player vs AI")){
-            playingWithAI = true;
-        } else {
-            playingWithAI = false;
-        }
+        playingWithAI = e.getActionCommand().equals("Player vs AI");
     }
     
     public static boolean clickedButton(String indexOfClickedButton)
