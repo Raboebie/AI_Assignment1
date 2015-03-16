@@ -299,9 +299,11 @@ public class GUI implements ActionListener{
                    colourCell(i,grid[i].getBackground(),Color.cyan);                     
                 }
             }
+            String[] results = checkWin();
+            if(results[0].equals("false")){//TODO: Put this in a new frame
+                System.out.println(results[1]);
+            }
             
-            
-                        
             frame.repaint();
             if(playingWithAI){
                 if(!Turn){
@@ -344,13 +346,13 @@ public class GUI implements ActionListener{
             }
         
         
-        if(indexLeft1 > -1)
+        if(indexLeft1 > -1 && index % dimentions != 0)
             if(grid[indexLeft1].getBackground() == opponentColour){
                 grid[indexLeft1].setBackground(grid[index].getBackground());
                 checkPossesion(indexLeft1);
             }
         
-        if(indexRight1 > -1)
+        if(indexRight1 > -1 && index % dimentions != dimentions -1)
             if(grid[indexRight1].getBackground() == opponentColour){
                 grid[indexRight1].setBackground(grid[index].getBackground());
                 checkPossesion(indexRight1);
@@ -376,13 +378,13 @@ public class GUI implements ActionListener{
             }
         
         
-        if(indexLeft2 > -1)
+        if(indexLeft2 > -1 && index % dimentions != 1 && index % dimentions != 0)
             if(grid[indexLeft2].getBackground() == opponentColour){
                 grid[indexLeft2].setBackground(grid[index].getBackground());
                 checkPossesion(indexLeft2);
             }
         
-        if(indexRight2 > -1)
+        if(indexRight2 > -1 && index % dimentions != dimentions -2 && index % dimentions != dimentions -1)
             if(grid[indexRight2].getBackground() == opponentColour){
                 grid[indexRight2].setBackground(grid[index].getBackground());
                 checkPossesion(indexRight2);
@@ -403,6 +405,32 @@ public class GUI implements ActionListener{
             }
         }
         grid[index].setBackground(color);
+    }
+    
+    public static String[] checkWin(){
+        String stillInTheGame = "false";
+        int red = 0, blue = 0;
+        for(int i = 0; i < dimentions*dimentions; i++){
+            if(grid[i].getBackground() == Color.red)
+                red++;
+            if(grid[i].getBackground() == Color.blue)
+                blue++;
+            
+            if(red > 0 && blue > 0){
+                stillInTheGame = "true";
+                break;
+            }
+        }
+        
+        String message = "";
+        if(stillInTheGame.equals("false")){
+            if(red > 0)
+                message = "Player red has won the game!";
+            else
+                message = "Player Blue has won the game!";
+        }
+        
+        return new String[]{ stillInTheGame, message};
     }
     
     private static int[] checkCellColor(int index)
