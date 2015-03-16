@@ -289,6 +289,8 @@ public class GUI implements ActionListener{
             selectedButton.setBackground(Color.white);
             selectedButton = null;
             
+            checkPossesion(Integer.parseInt(indexOfClickedButton));
+            
             for(int i = 0; i < grid.length; i++){
                 if(grid[i].getBackground() == Color.red ){
                    colourCell(i,grid[i].getBackground(),Color.pink); 
@@ -322,7 +324,69 @@ public class GUI implements ActionListener{
         else
             opponentColour = Color.red;
         
-
+        //Check binne die een blokkie radius of daar 'n opponent is
+        int indexUp1 = index-dimentions >= 0? index-dimentions : -1;
+        int indexDown1 = index+dimentions < dimentions*dimentions? index + dimentions : -1; 
+        int indexLeft1 = index - 1 >= 0? index - 1 : -1 ;
+        int indexRight1 = index + 1 < dimentions*dimentions? index + 1 : -1;
+        
+        if(indexUp1 > -1)
+            if(grid[indexUp1].getBackground() == opponentColour){
+                grid[indexUp1].setBackground(grid[index].getBackground());
+                checkPossesion(indexUp1);
+            }
+        
+        
+        if(indexDown1 > -1)
+            if(grid[indexDown1].getBackground() == opponentColour){
+                grid[indexDown1].setBackground(grid[index].getBackground());
+                checkPossesion(indexDown1);
+            }
+        
+        
+        if(indexLeft1 > -1)
+            if(grid[indexLeft1].getBackground() == opponentColour){
+                grid[indexLeft1].setBackground(grid[index].getBackground());
+                checkPossesion(indexLeft1);
+            }
+        
+        if(indexRight1 > -1)
+            if(grid[indexRight1].getBackground() == opponentColour){
+                grid[indexRight1].setBackground(grid[index].getBackground());
+                checkPossesion(indexRight1);
+            }
+        
+        //Check binne die twee blokkie radius of daar 'n opponent is
+        int indexUp2 = index-(dimentions*2) >= 0? index-(dimentions*2) : -1;
+        int indexDown2 = index+(dimentions*2) < dimentions*dimentions? index + (dimentions*2) : -1; 
+        int indexLeft2 = index - 2 >= 0? index - 2 : -1 ;
+        int indexRight2 = index + 2 < dimentions*dimentions? index + 2 : -1;
+        
+        if(indexUp2 > -1)
+            if(grid[indexUp2].getBackground() == opponentColour){
+                grid[indexUp2].setBackground(grid[index].getBackground());
+                checkPossesion(indexUp2);
+            }
+        
+        
+        if(indexDown2 > -1)
+            if(grid[indexDown2].getBackground() == opponentColour){
+                grid[indexDown2].setBackground(grid[index].getBackground());
+                checkPossesion(indexDown2);
+            }
+        
+        
+        if(indexLeft2 > -1)
+            if(grid[indexLeft2].getBackground() == opponentColour){
+                grid[indexLeft2].setBackground(grid[index].getBackground());
+                checkPossesion(indexLeft2);
+            }
+        
+        if(indexRight2 > -1)
+            if(grid[indexRight2].getBackground() == opponentColour){
+                grid[indexRight2].setBackground(grid[index].getBackground());
+                checkPossesion(indexRight2);
+            }
     }
     
     private static void colourCell(int index, Color color , Color tranparentColor)
