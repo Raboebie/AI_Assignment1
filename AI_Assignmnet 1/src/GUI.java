@@ -210,6 +210,7 @@ public class GUI implements ActionListener{
         
         if(selectedButton == null){       
             selectedButton = grid[Integer.parseInt(indexOfClickedButton)];
+            selectedButton.putClientProperty("INDEX",Integer.parseInt(indexOfClickedButton));
             if(Turn){
                 if(selectedButton.getBackground() != Color.red){
                     selectedButton = null;
@@ -222,16 +223,24 @@ public class GUI implements ActionListener{
                 }   
                 
             }
+            AllowedNumSteps = checkNumberOfAllowedMoves(Integer.parseInt(indexOfClickedButton), new LinkedList<Integer>(), 0);
             grid[Integer.parseInt(indexOfClickedButton)].setBorder(new LineBorder(Color.GREEN, 1));
             frame.repaint();
         }
         else{
+            if(Integer.parseInt(indexOfClickedButton) == (int)selectedButton.getClientProperty("INDEX")){
+                selectedButton.setBorder(new LineBorder(Color.BLACK, 1));
+                selectedButton = null;
+                return false;
+            }
+            
             int indexUp = Integer.parseInt(indexOfClickedButton);
             int indexDown = Integer.parseInt(indexOfClickedButton);
             
             if(grid[Integer.parseInt(indexOfClickedButton)].getBackground() == Color.red || grid[Integer.parseInt(indexOfClickedButton)].getBackground() == Color.blue)
                 return false;
             
+            //AllowedNumSteps = checkNumberOfAllowedMoves((int)selectedButton.getClientProperty("INDEX"), null, 1);
             for(int k = 0; k < AllowedNumSteps ; k++){
                 indexUp -= dimentions;
                     if(indexUp >= 0)
@@ -277,8 +286,7 @@ public class GUI implements ActionListener{
                 Turn = true;
                 frame.repaint();
             }
-
-                        
+      
             for(int i = 0; i < grid.length; i++){
                 if(grid[i].getBackground() != Color.red && grid[i].getBackground() != Color.blue){
                    grid[i].setBackground(Color.white); 
@@ -322,6 +330,84 @@ public class GUI implements ActionListener{
         }
         
         return false;
+    }
+    
+    public static int checkNumberOfAllowedMoves(int index, LinkedList<Integer> preTested,int count)
+    {
+        Color playerColour = grid[index].getBackground();
+        
+        //Check binne die een blokkie radius of daar 'n opponent is
+        int indexUp1 = index-dimentions >= 0? index-dimentions : -1;
+        int indexDown1 = index+dimentions < dimentions*dimentions? index + dimentions : -1; 
+        int indexLeft1 = index - 1 >= 0? index - 1 : -1 ;
+        int indexRight1 = index + 1 < dimentions*dimentions? index + 1 : -1;
+        
+        boolean up = false;
+        
+        if(indexUp1 > -1){
+            if(grid[indexUp1].getBackground() == playerColour && !preTested.contains(indexUp1)){
+                preTested.add(indexUp1);
+                count = checkNumberOfAllowedMoves(indexUp1, preTested, count + 1);
+            }
+        }
+        
+        if(indexDown1 > -1){
+            if(grid[indexDown1].getBackground() == playerColour && !preTested.contains(indexDown1)){
+                preTested.add(indexDown1);
+                count = checkNumberOfAllowedMoves(indexDown1, preTested, count + 1);
+            }
+        }
+        
+        if(indexLeft1 > -1 && index % dimentions != 0)
+        {
+            if(grid[indexLeft1].getBackground() == playerColour && !preTested.contains(indexLeft1)){
+                preTested.add(indexLeft1);
+                count = checkNumberOfAllowedMoves(indexLeft1, preTested, count + 1);
+            }
+        }
+        
+        if(indexRight1 > -1 && index % dimentions != dimentions -1)
+        {
+            if(grid[indexRight1].getBackground() == playerColour && !preTested.contains(indexRight1)){
+                preTested.add(indexRight1);
+                count = checkNumberOfAllowedMoves(indexRight1, preTested, count + 1);
+            }
+        }
+        //Check binne die twee blokkie radius of daar 'n opponent is
+        int indexUp2 = index-(dimentions*2) >= 0? index-(dimentions*2) : -1;
+        int indexDown2 = index+(dimentions*2) < dimentions*dimentions? index + (dimentions*2) : -1; 
+        int indexLeft2 = index - 2 >= 0? index - 2 : -1 ;
+        int indexRight2 = index + 2 < dimentions*dimentions? index + 2 : -1;
+        
+        if(indexUp2 > -1){
+            if(grid[indexUp2].getBackground() == playerColour && !preTested.contains(indexUp2)){
+                preTested.add(indexUp2);
+                count = checkNumberOfAllowedMoves(indexUp2, preTested, count + 1);
+            }
+        }
+        
+        if(indexDown2 > -1){
+            if(grid[indexDown2].getBackground() == playerColour && !preTested.contains(indexDown2)){
+                preTested.add(indexDown2);
+                count = checkNumberOfAllowedMoves(indexDown2, preTested, count + 1);
+            }
+        }
+                
+        if(indexLeft2 > -1 && index % dimentions != 1 && index % dimentions != 0){
+            if(grid[indexLeft2].getBackground() == playerColour && !preTested.contains(indexLeft2)){
+                preTested.add(indexLeft2);
+                count = checkNumberOfAllowedMoves(indexLeft2, preTested, count + 1);
+            }
+        }
+        
+        if(indexRight2 > -1 && index % dimentions != dimentions -2 && index % dimentions != dimentions -1){
+            if(grid[indexRight2].getBackground() == playerColour && !preTested.contains(indexRight2)){
+                preTested.add(indexRight2);
+                count = checkNumberOfAllowedMoves(indexRight2, preTested, count + 1);
+            }
+        }
+        
+        return count > 0 ? count : 1;
     }
     
     public static void checkPossesion(int index)
